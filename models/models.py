@@ -4,8 +4,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 def get_gemini_flash():
     llm = ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
-          max_tokens=1024
-          )
+        max_tokens=1024
+        )
     return llm
 
 def get_gemini_pro():
@@ -22,5 +22,5 @@ def get_mistral_model():
 def get_mistral_embedding():
     embeddings = MistralAIEmbeddings(
         model="mistral-embed"
-    )
+        )
     return embeddings

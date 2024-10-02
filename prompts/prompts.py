@@ -19,3 +19,26 @@ You a question re-writer that converts an input question to a better version tha
 Look at the input and try to reason about the underlying sematic intent / meaning.
 Give the question only without any acknowledgement or extra words.
 """
+
+rag_prompt_template = """human
+
+You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question.
+If you don't know the answer, just say that you don't know. Keep the answer concise.
+Show the resources you use to answer the question. 
+If the resources are linked show them like this:
+Resources:
+[1] https://www.example.com
+[2] https://www.example.com
+
+If the resources are not linked show them like this:
+Resources:
+- Page number <page number>
+IGNORE image path
+
+Question: {question} 
+
+Context: {context} 
+
+Answer: 
+
+"""

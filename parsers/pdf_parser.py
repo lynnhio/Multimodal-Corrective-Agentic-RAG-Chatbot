@@ -1,11 +1,8 @@
 from langchain.schema import Document
+from utils.helper import get_description
 import fitz  # PyMuPDF
 import hashlib
 import os
-
-def get_description(image_bytes, context):
-    # Placeholder for your actual description logic
-    return "dummy description", "yes"
 
 class PdfParser:
     def __init__(self, output_folder):
@@ -18,7 +15,7 @@ class PdfParser:
         self.text_list = []
         self.documents = []
 
-    def extract_from_pdf(self, pdf_file):
+    def extract_from_file(self, pdf_file):
         # Extract text and images using PyMuPDF
         pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
         for page_number in range(len(pdf_document)):

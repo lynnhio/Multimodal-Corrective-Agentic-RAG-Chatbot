@@ -2,6 +2,7 @@ from langchain_mistralai import ChatMistralAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_community.tools.tavily_search import TavilySearchResults
 from pydantic import BaseModel, Field
 
 from prompts.prompts import (
@@ -47,3 +48,7 @@ def get_question_rewriter():
     question_rewriter = re_write_prompt | llm | StrOutputParser()
     
     return question_rewriter
+
+def get_web_search_tool(k = 3):
+    web_search_tool = TavilySearchResults(k=k)
+    return web_search_tool

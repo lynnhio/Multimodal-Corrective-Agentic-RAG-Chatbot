@@ -1,13 +1,15 @@
-from langchain_community.vectorstores import Chroma
-
-from langchain_mistralai import MistralAIEmbeddings, ChatMistralAI
-
+from langchain_chroma import Chroma
+from langchain_mistralai import MistralAIEmbeddings
+from constants.constansts import (
+    PERSIST_DIRECTORY,
+    COLLECTION_NAME
+)
 class VectorDB:
     """
     A class representing a vector database with a retriever.
     """
 
-    def __init__(self, documents, collection_name="rag-chroma", model="mistral-embed"):
+    def __init__(self, documents, model="mistral-embed"):
         """
         Initializes the VectorDB instance.
 
@@ -17,7 +19,6 @@ class VectorDB:
         - model (str, optional): The model to use for embeddings. Defaults to "mistral-embed".
         """
         self.documents = documents
-        self.collection_name = collection_name
         self.model = model
         self.embeddings = MistralAIEmbeddings(model=self.model)
         self.vectorstore = self._create_vectorstore()
@@ -29,7 +30,8 @@ class VectorDB:
         """
         return Chroma.from_documents(
             documents=self.documents,
-            collection_name=self.collection_name,
+            collection_name=COLLECTION_NAME,
+            persist_directory = PERSIST_DIRECTORY,
             embedding=self.embeddings
         )
     

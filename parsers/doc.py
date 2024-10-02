@@ -1,10 +1,10 @@
 from parsers.pdf_parser import PdfParser
 from parsers.pptx_parser import PPTXParser
 from langchain.schema import Document
-
+from constants.constansts import OUTPUT_FOLDER
 
 class DocumentExtractor:
-    def __init__(self, output_folder="extracted_images"):
+    def __init__(self, output_folder=OUTPUT_FOLDER):
         self.output_folder = output_folder
         self.documents = []
 

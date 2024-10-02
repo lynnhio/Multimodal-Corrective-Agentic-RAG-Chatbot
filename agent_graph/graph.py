@@ -27,30 +27,35 @@ class GraphState(TypedDict):
     documents : List[str]
     relevant_images : List[str]
 
+# Create
+def create_graph():
+    graph = StateGraph(GraphState)
 
-workflow = StateGraph(GraphState)
+    # Define the nodes
+    graph.add_node("retrieve", retrieve)  # retrieve
+    graph.add_node("grade_documents", grade_documents)  # grade documents
+    graph.add_node("generate", generate)  # generatae
+    graph.add_node("transform_query", transform_query)  # transform_query
+    graph.add_node("web_search_node", web_search)  # web search
 
-# Define the nodes
-workflow.add_node("retrieve", retrieve)  # retrieve
-workflow.add_node("grade_documents", grade_documents)  # grade documents
-workflow.add_node("generate", generate)  # generatae
-workflow.add_node("transform_query", transform_query)  # transform_query
-workflow.add_node("web_search_node", web_search)  # web search
+    # Build graph
+    graph.set_entry_point("retrieve")
+    graph.add_edge("retrieve", "grade_documents")
+    graph.add_conditional_edges(
+        "grade_documents",
+        decide_to_generate,
+        {
+            "transform_query": "transform_query",
+            "generate": "generate",
+        },
+    )
+    graph.add_edge("transform_query", "web_search_node")
+    graph.add_edge("web_search_node", "generate")
+    graph.add_edge("generate", END)
 
-# Build graph
-workflow.set_entry_point("retrieve")
-workflow.add_edge("retrieve", "grade_documents")
-workflow.add_conditional_edges(
-    "grade_documents",
-    decide_to_generate,
-    {
-        "transform_query": "transform_query",
-        "generate": "generate",
-    },
-)
-workflow.add_edge("transform_query", "web_search_node")
-workflow.add_edge("web_search_node", "generate")
-workflow.add_edge("generate", END)
+    return graph
 
 # Compile
-app = workflow.compile()
+def compile_workflow(graph):
+    workflow = graph.compile()
+    return workflow

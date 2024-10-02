@@ -1,26 +1,18 @@
 import streamlit as st
-from pptx import Presentation
 from parsers.pdf_parser import PdfParser
+from parsers.pptx_parser import PPTXParser
 
 file = st.file_uploader("Upload file", type=["pdf", "pptx"])
 if file:
     if(file.name.endswith("pptx")):
         st.header("PPTX")
-        prs = Presentation(file)
-        # Iterate through the slides
-        txt = ""
-        for page_number, slide in enumerate(prs.slides):
-            # Iterate through the shapes in the slide
-            curr_text = ""
-            for shape in slide.shapes:
-                # Check if the shape has text
-                if shape.has_text_frame:
-                    # Extract the text
-                    st.markdown(shape.text)
-                    st.write("")
-                    if shape.text not in ["", "\n"]:
-                        curr_text += f"\n{shape.text}"
-
+        # Example usage:
+        parser = PPTXParser(output_folder="extracted_files")
+        text_list, documents = parser.extract_from_pptx(file)
+        for i, x in enumerate(text_list):
+            st.write(f"\nNEW PAGE {i+1}:\n")
+            st.markdown(x)
+            
     elif file.name.endswith("pdf"):
         # Example usage:
         pdf_parser = PdfParser(output_folder="extracted_files")

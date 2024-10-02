@@ -10,8 +10,10 @@ def get_description(image_bytes, context):
 class PdfParser:
     def __init__(self, output_folder):
         self.output_folder = output_folder
+        # Create output folder if it doesn't exist
         if not os.path.exists(self.output_folder):
             os.makedirs(self.output_folder)
+        
         self.seen_images = set()
         self.text_list = []
         self.documents = []
@@ -59,3 +61,6 @@ class PdfParser:
         pdf_document.close()
         return self.text_list, self.documents
 
+# Example usage:
+# pdf_parser = PdfParser(output_folder="extracted_files")
+# text_list, documents = pdf_parser.extract_from_pdf(uploaded_file)

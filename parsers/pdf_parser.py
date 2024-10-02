@@ -1,11 +1,8 @@
 from langchain.schema import Document
+from utils.helper import get_description
 import fitz  # PyMuPDF
 import hashlib
 import os
-
-def get_description(image_bytes, context):
-    # Placeholder for your actual description logic
-    return "dummy description", "yes"
 
 class PdfParser:
     def __init__(self, output_folder):

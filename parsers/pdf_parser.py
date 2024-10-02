@@ -18,7 +18,7 @@ class PdfParser:
         self.text_list = []
         self.documents = []
 
-    def extract_from_pdf(self, pdf_file):
+    def extract_from_file(self, pdf_file):
         # Extract text and images using PyMuPDF
         pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
         for page_number in range(len(pdf_document)):

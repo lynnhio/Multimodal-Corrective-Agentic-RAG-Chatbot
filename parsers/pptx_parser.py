@@ -20,7 +20,7 @@ class PPTXParser:
         self.documents = []
 
 
-    def extract_from_pptx(self, pptx_file):
+    def extract_from_file(self, pptx_file):
         # Open the PPTX file
         prs = Presentation(pptx_file)
 

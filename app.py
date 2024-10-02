@@ -7,7 +7,7 @@ if file:
     if(file.name.endswith("pptx")):
         st.header("PPTX")
         # Example usage:
-        parser = PPTXParser(output_folder="extracted_files")
+        parser = PPTXParser(output_folder="extracted_images")
         text_list, documents = parser.extract_from_pptx(file)
         for i, x in enumerate(text_list):
             st.write(f"\nNEW PAGE {i+1}:\n")
@@ -15,7 +15,7 @@ if file:
             
     elif file.name.endswith("pdf"):
         # Example usage:
-        pdf_parser = PdfParser(output_folder="extracted_files")
+        pdf_parser = PdfParser(output_folder="extracted_images")
         text_list, documents = pdf_parser.extract_from_pdf(file)
         for x in text_list:
             st.markdown(x)

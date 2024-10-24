@@ -1,15 +1,17 @@
 from langchain_chroma import Chroma
-from langchain_mistralai import MistralAIEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from constants.constansts import (
     PERSIST_DIRECTORY,
     COLLECTION_NAME
 )
+
+
 class VectorDB:
     """
     A class representing a vector database with a retriever.
     """
 
-    def __init__(self, documents, model="mistral-embed"):
+    def __init__(self, documents, model="models/embedding-001"):
         """
         Initializes the VectorDB instance.
 
@@ -20,7 +22,7 @@ class VectorDB:
         """
         self.documents = documents
         self.model = model
-        self.embeddings = MistralAIEmbeddings(model=self.model)
+        self.embeddings = GoogleGenerativeAIEmbeddings(model=self.model)
         self.vectorstore = self._create_vectorstore()
         self.retriever = self.vectorstore.as_retriever()
 
@@ -31,7 +33,7 @@ class VectorDB:
         return Chroma.from_documents(
             documents=self.documents,
             collection_name=COLLECTION_NAME,
-            persist_directory = PERSIST_DIRECTORY,
+            persist_directory=PERSIST_DIRECTORY,
             embedding=self.embeddings
         )
     

@@ -1,4 +1,5 @@
 venv*
+.venv*
 
 .env
 
@@ -7,3 +8,6 @@ __pycache__/
 
 extracted_images
 extracted_images/
+
+.idea/
+Chroma_VDB/

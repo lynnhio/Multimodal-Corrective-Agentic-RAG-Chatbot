@@ -52,15 +52,17 @@ def get_answer(message, history):
         return "Somthing went wrong, Please, upload a file if you did not."
 
 
-with gr.Blocks(theme='Nymbo/Nymbo_Theme') as iface:
-    file_input = gr.File(label="Upload PDF/PPTX Document")
-    file_text = gr.Textbox(label="File Response Text", interactive=False)
-    file_button = gr.Button("Submit File")
-    file_button.click(process_file, inputs=[file_input], outputs=[file_text])
-
-    gr.ChatInterface(fn=get_answer,
-                     type="messages",
-                     examples=[{"text": "What is this document about?", "files": []}],
-                     title="Let's Chat", multimodal=True)
+with gr.Blocks(theme='citrus') as iface:
+    with gr.Row():
+        with gr.Column(scale=1):
+            file_input = gr.File(label="Upload PDF/PPTX Document")
+            file_text = gr.Textbox(label="File Response Text", interactive=False)
+            file_button = gr.Button("Submit File")
+            file_button.click(process_file, inputs=[file_input], outputs=[file_text])
+        with gr.Column(scale=1):
+            gr.ChatInterface(fn=get_answer,
+                             type="messages",
+                             examples=[{"text": "What is this document about?", "files": []}],
+                             title="Let's Chat", fill_height=False, multimodal=True)
 
 iface.launch(debug=True)

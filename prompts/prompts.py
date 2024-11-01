@@ -23,12 +23,15 @@ Give the question only without any acknowledgement or extra words.
 rag_prompt_template = """human
 
 You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question.
-Keep the answer concise.
-Show the resources where the content come from, the resources may be URLs OR page numbers. 
-Please include the Resources that found in the context, which can be URLs or page_numbers. 
+Structure your response in a readable one.
 
+Please include the Resources that found in the context, which can be URLs or page_numbers.
+For example if you have Document(page_number=4, type='text', ...) so the resource is page 5.
+Also if you found Urls in your context show them in the resources section.  
 IGNORE image paths and page content, just show (page_number or Url) if found.
-DON'T show Page content. 
+DON'T show Document object, page content or image paths. Just show page number (number). 
+
+Show the resources at the end of the response in a bulleted list points. 
 Question: {question} 
 
 Context: {context} 

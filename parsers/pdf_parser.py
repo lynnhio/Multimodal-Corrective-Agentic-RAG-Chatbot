@@ -4,20 +4,22 @@ import fitz  # PyMuPDF
 import hashlib
 import os
 
+
 class PdfParser:
     def __init__(self, output_folder):
         self.output_folder = output_folder
         # Create output folder if it doesn't exist
         if not os.path.exists(self.output_folder):
             os.makedirs(self.output_folder)
-        
+
         self.seen_images = set()
         self.text_list = []
         self.documents = []
 
     def extract_from_file(self, pdf_file):
         # Extract text and images using PyMuPDF
-        pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
+        # pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
+        pdf_document = fitz.open(pdf_file, filetype="pdf")
         for page_number in range(len(pdf_document)):
             page = pdf_document[page_number]
 
@@ -41,12 +43,13 @@ class PdfParser:
 
                     if useful == "yes":
                         self.text_list[page_number] += f"\n Image Description:\n{description}"
-                        image_filename = os.path.join(self.output_folder, f'page_{page_number + 1}_img_{img_index + 1}.png')
+                        image_filename = os.path.join(self.output_folder,
+                                                      f'page_{page_number + 1}_img_{img_index + 1}.png')
                         doc = Document(
                             page_content=description,
                             metadata={
                                 'type': 'image',
-                                'img_path': image_filename
+                                'img_path': image_filename,
                             }
                         )
                         self.documents.append(doc)
@@ -60,4 +63,4 @@ class PdfParser:
 
 # Example usage:
 # pdf_parser = PdfParser(output_folder="extracted_files")
-# text_list, documents = pdf_parser.extract_from_pdf(uploaded_file)
+# text_list, documents = pdf_parser.extract_from_file(uploaded_file)

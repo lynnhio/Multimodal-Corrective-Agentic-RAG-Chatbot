@@ -1,16 +1,11 @@
 from langchain.schema import Document
-from langchain_chroma import Chroma
-from langchain_mistralai import MistralAIEmbeddings
-from models.models import(
+from models.models import (
     get_retrieval_grader,
     get_rag_chain,
     get_question_rewriter,
     get_web_search_tool
 )
-from constants.constansts import (
-    PERSIST_DIRECTORY,
-    COLLECTION_NAME
-)
+
 
 def retrieve(state):
     """
@@ -22,18 +17,13 @@ def retrieve(state):
     Returns:
         state (dict): New key added to state, documents, that contains retrieved documents
     """
-    print("---RETRIEVE---")
-    question = state["question"]
 
-    # Retrieval
-    vectorstore = Chroma(
-    collection_name=COLLECTION_NAME,  # Name of the collection
-    persist_directory=PERSIST_DIRECTORY,
-    embedding_function=MistralAIEmbeddings(model="mistral-embed")
-    )
-    retriever = vectorstore.as_retriever()
-    documents = retriever.get_relevant_documents(question)
+    question = state["question"]
+    retriever = state['retriever']
+
+    documents = retriever.invoke(question)
     return {"documents": documents, "question": question}
+
 
 def generate(state):
     """
@@ -45,7 +35,7 @@ def generate(state):
     Returns:
         state (dict): New key added to state, generation, that contains LLM generation
     """
-    print("---GENERATE---")
+
     question = state["question"]
     documents = state["documents"]
     relevant_images = []
@@ -59,7 +49,8 @@ def generate(state):
         "documents": documents,
         "question": question,
         "generation": generation,
-        "relevant_images":relevant_images}
+        "relevant_images": relevant_images}
+
 
 def grade_documents(state):
     """
@@ -72,7 +63,6 @@ def grade_documents(state):
         state (dict): Updates documents key with only filtered relevant documents
     """
 
-    print("---CHECK DOCUMENT RELEVANCE TO QUESTION---")
     question = state["question"]
     documents = state["documents"]
 
@@ -86,13 +76,12 @@ def grade_documents(state):
         if score is not None and hasattr(score, 'binary_score'):
             grade = score.binary_score
         if grade == "yes":
-            print("---GRADE: DOCUMENT RELEVANT---")
             filtered_docs.append(d)
         else:
-            print("---GRADE: DOCUMENT NOT RELEVANT---")
             web_search = "Yes"
             continue
     return {"documents": filtered_docs, "question": question, "web_search": web_search}
+
 
 def transform_query(state):
     """
@@ -105,7 +94,6 @@ def transform_query(state):
         state (dict): Updates question key with a re-phrased question
     """
 
-    print("---TRANSFORM QUERY---")
     question = state["question"]
     documents = state["documents"]
 
@@ -113,6 +101,7 @@ def transform_query(state):
     question_rewriter = get_question_rewriter()
     better_question = question_rewriter.invoke({"question": question})
     return {"documents": documents, "question": better_question}
+
 
 def web_search(state):
     """
@@ -125,7 +114,6 @@ def web_search(state):
         state (dict): Updates documents key with appended web results
     """
 
-    print("---WEB SEARCH---")
     question = state["question"]
     documents = state["documents"]
 
@@ -135,14 +123,13 @@ def web_search(state):
     web_results = "\n".join([f"Content from Url:{d['url']}:\n{d['content']}" for d in docs])
     web_results = Document(
         page_content=web_results,
-        metadata = {
+        metadata={
             'type': 'text'
         })
     documents.append(web_results)
 
     return {"documents": documents, "question": question}
 
-### Edges
 
 def decide_to_generate(state):
     """
@@ -155,15 +142,7 @@ def decide_to_generate(state):
         str: Binary decision for next node to call
     """
 
-    print("---ASSESS GRADED DOCUMENTS---")
-    web_search = state["web_search"]
-
-    if web_search == "Yes":
-        # All documents have been filtered check_relevance
-        # We will re-generate a new query
-        print("---DECISION: ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, TRANSFORM QUERY---")
+    if state["web_search"] == "Yes":
         return "transform_query"
     else:
-        # We have relevant documents, so generate answer
-        print("---DECISION: GENERATE---")
         return "generate"

@@ -1,11 +1,9 @@
 from langchain.schema import Document
 from pptx import Presentation
+from utils.helper import get_description
 import hashlib
 import os
 
-def get_description(image_bytes, context):
-    # Placeholder for your actual description logic
-    return "dummy description", "yes"
 
 class PPTXParser:
     def __init__(self, output_folder):
@@ -18,7 +16,6 @@ class PPTXParser:
         self.seen_images = set()
         self.text_list = []
         self.documents = []
-
 
     def extract_from_file(self, pptx_file):
         # Open the PPTX file
@@ -58,7 +55,8 @@ class PPTXParser:
                             print(f"{useful} at page: {page_number + 1}")
                             if useful == "yes":
                                 self.text_list[page_number] += f"\n Image Description:\n{description}"
-                                image_filename = os.path.join(self.output_folder, f'page_{page_number + 1}_img_{self.id + 1}.png')
+                                image_filename = os.path.join(self.output_folder,
+                                                              f'page_{page_number + 1}_img_{self.id + 1}.png')
                                 doc = Document(
                                     page_content=description,
                                     metadata={
@@ -79,4 +77,4 @@ class PPTXParser:
 
 # Example usage:
 # parser = PPTXParser(output_folder="extracted_files")
-# text_list, documents = parser.extract_from_pptx(uploaded_file)
+# text_list, documents = parser.extract_from_file(uploaded_file)

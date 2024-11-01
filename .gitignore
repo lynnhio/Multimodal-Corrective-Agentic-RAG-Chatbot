@@ -1,5 +1,5 @@
-venv*
 .venv*
+.venv/*
 
 .env
 
@@ -10,4 +10,3 @@ extracted_images
 extracted_images/
 
 .idea/
-Chroma_VDB/

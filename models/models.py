@@ -21,13 +21,13 @@ def get_retrieval_grader():
     grade_prompt = PromptTemplate.from_template(grader_prompt_template)
     llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0)
     structured_llm_grader = llm.with_structured_output(GradeDocuments)
-    
+
     retrieval_grader = grade_prompt | structured_llm_grader
 
     return retrieval_grader
 
 
-def get_rag_chain():    
+def get_rag_chain():
     rag_prompt = ChatPromptTemplate.from_template(rag_prompt_template)
     llm = ChatMistralAI(temperature=0)
 
@@ -35,6 +35,7 @@ def get_rag_chain():
     rag_chain = rag_prompt | llm | StrOutputParser()
 
     return rag_chain
+
 
 def get_question_rewriter():
     re_write_prompt = ChatPromptTemplate.from_messages(
@@ -44,11 +45,12 @@ def get_question_rewriter():
         ]
     )
     llm = ChatMistralAI(temperature=0)
-    
+
     question_rewriter = re_write_prompt | llm | StrOutputParser()
-    
+
     return question_rewriter
 
-def get_web_search_tool(k = 3):
+
+def get_web_search_tool(k=3):
     web_search_tool = TavilySearchResults(k=k)
     return web_search_tool

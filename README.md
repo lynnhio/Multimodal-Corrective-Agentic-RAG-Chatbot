@@ -44,13 +44,13 @@
 - **Pereparing the vector database:**
 
   <p align='center'>
-    <img src='assets/doc.svg' width= 80% alt='My Image'> 
+    <img src='assets/doc.png' width= 80% alt='My Image'> 
   </p>
 
 - **Question Answering:**
 
   <p align='center'>
-    <img src='assets/graph.svg' width= 80% alt='My Image'> 
+    <img src='assets/graph.png' width= 80% alt='My Image'> 
   </p>
 
 ---

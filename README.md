@@ -10,15 +10,15 @@
 
 - **agents:** Defines the functions of each agent.  
 
-- **database:** Handles the interaction with ChromaDB for vector storage and retrieval.  
+- **database:** Manages interactions with ChromaDB for vector storage and retrieval.  
 
-- **models:** Defines the underlying models used whithin each node in the graph (retriever model, grader model, ...).  
+- **models:** Defines the underlying models used within each node in the graph (retriever model, grader model, etc.).  
 
-- **parsers:** Handles document parsing for different extentions (PDF/PPTX for now).  
+- **parsers:** Handles document parsing for different formats (currently supports PDF and PPTX).  
 
-- **utils:** Handles functions that are commonly used in differnt places in the project.  
+- **utils:** Contains functions that are commonly used throughout the project.  
 
-- **app:** The main class that integrates all together and lanch the gradio interface.  
+- **app:** The main class that integrates everything and launches the Gradio interface.  
 
 ---
 
@@ -63,13 +63,21 @@ To set up and test the project, follow these steps:
    git clone https://github.com/yourusername/corrective-agentic-rag.git
    cd corrective-agentic-rag
    ```
-   
+
+2. **:** Add your API keys and tokens in the `.env.example` file and rename it as `.env`.:  
+   ```bash
+   GOOGLE_API_KEY = <add yours>
+   MISTRAL_API_KEY = <add yours>
+   TAVILY_API_KEY = <add yours>
+   HF_TOKEN = <add yours>
+   ```
+
 2. **Install Dependencies:** Ensure you have `Python 3.10+` and install the required packages:  
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Run the Application:2.** Start the application using:  
+3. **Run the Application:** Start the application using:  
    ```bash
    python app.py
    ```
@@ -77,9 +85,29 @@ To set up and test the project, follow these steps:
 4. **Access the Interface:** Open your web browser and navigate to http://localhost:7860 to interact with the application.
 
 ---
-# Usage
-TODO:
-<</Show images here >>
+# Usage and key features
+
+### File Uploading
+> You can upload either PDF or PPTX file to be proccessed.
+
+<p align='center'>
+    <img src='assets/upload.gif' width= 50% alt='My Image'> 
+</p>
+
+### Multimodal retriever
+> The bot will provide the relevant image from the document if founded.
+
+<p align='center'>
+    <img src='assets/multimodal.gif' width= 50% alt='My Image'> 
+</p>
+
+### Web Search Tool
+> If your question cannot be answered from the document, the bot will search the web for relevant documents and provide the resources along with the answer.
+
+<p align='center'>
+    <img src='assets/resources.gif' width= 50% alt='My Image'> 
+</p>
+
 
 ---
 # Contributing

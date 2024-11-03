@@ -60,7 +60,7 @@ To set up and test the project, follow these steps:
 
 1. **Clone the Repository**:  
    ```bash
-   git clone https://github.com/yourusername/corrective-agentic-rag.git
+   git clone https://github.com/Elkhiat15/Multimodal-Corrective-Agentic-RAG-Chatbot
    cd corrective-agentic-rag
    ```
 

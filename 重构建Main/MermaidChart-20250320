@@ -1,0 +1,41 @@
+---
+config:
+  layout: fixed
+  look: handDrawn
+  theme: base
+---
+flowchart TD
+    A["User"] --> B{"设置置信区间"}
+    B --> D["外部数据Web Search"] & C["内部数据Confidential Data"]
+    C --> K["时序特征-初步归因结论
+    Neural Prophet+R-adtributor"]
+    E["运营时间节点、游戏支付数据、
+    人货场运营统计维度、纵向漏斗数据表现"] -- Create Index --> L["内部数据-向量数据库(ChromaDB)"]
+    D --> P["LangGraph-TavilySearchResults进行Google的Web Search"]
+    N@{ label: "【Sub-Agent to correct
+    语义纠偏 Re-adjust Query定位关键词搜索相关web'si'te" } --> P
+    O["官网爬虫(Crawl4AI)
+    渠道、游戏官网公告、官媒等"] -- 定向Web Search --> F["外部事件合集"]
+    P -- TOP5 --> M{"【Sub-Agent】 to grade Web Searching Relevant Score相关性分数"}
+    M -- High --> F
+    M -- "Incorrect: 外部事件合集重新构造Re-research" --> N
+    R@{ label: "Knoweledge searching(<span style=\"background-color:\">TavilySearchResults</span>)" } --> W{"【Sub-agent】Retrieval Evaluation"} & L
+    F --> R
+    L --> R
+    G["Knowledge Refinement Process"] --> I["【Sub-Agent Funciton Call】自动异动归因报告生成"]
+    G -- "Ambiguous: 内部知识Refine+外部信息定向Re-research" --> R
+    I --> J["决策反馈"]
+    J --> A
+    W -- Correct: 内部知识Refine --> G
+    K --> W
+    K -- 初步结论输入WebSearch --> P
+    W -- Incorrect --> R
+    n1["定向调度"] --> O
+    W -- Ambiguous --> G
+    E@{ shape: braces}
+    L@{ shape: db}
+    N@{ shape: proc}
+    O@{ shape: braces}
+    F@{ shape: diam}
+    R@{ shape: rect}
+    n1@{ shape: rect}

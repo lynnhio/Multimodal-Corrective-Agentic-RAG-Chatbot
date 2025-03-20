@@ -3,6 +3,7 @@ config:
   layout: fixed
   look: handDrawn
   theme: base
+  ref: https://arxiv.org/html/2401.15884v3#abstract - Corrective RAG论文
 ---
 flowchart TD
     A["User"] --> B{"设置置信区间"}
